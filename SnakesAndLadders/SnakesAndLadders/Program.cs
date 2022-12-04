@@ -59,11 +59,17 @@ internal class Program
         Console.WriteLine("*** ¡¡A JUGAR!! ***");
         Console.WriteLine("*******************");
 
-        estadoJuegoActual = tableroService.Iniciar(jugadores);
-        Console.WriteLine();
-        Console.WriteLine($"¿Desea simular la partida? ([S] para confirmar)");
+        estadoJuegoActual = tableroService.Iniciar(jugadores);     
 
-        bool simularPartida = Console.ReadLine().ToUpper().Equals("S");
+        ConsoleKeyInfo readKeySimular;
+        do
+        {
+            Console.WriteLine();
+            Console.WriteLine($"¿Desea simular la partida? (S/N)");
+            readKeySimular = Console.ReadKey();
+        } while (readKeySimular.Key != ConsoleKey.S && readKeySimular.Key != ConsoleKey.N);
+
+        bool simularPartida = readKeySimular.Key.Equals(ConsoleKey.S);
 
         while (estadoJuegoActual != EstadoJuego.FINALIZADO)
         {
@@ -118,9 +124,10 @@ internal class Program
                     if (jugadorService.EsGanador(jugador))
                     {
                         estadoJuegoActual = tableroService.Finalizar();
-                        Console.WriteLine("*******************************************");
+                        Console.WriteLine();
+                        Console.WriteLine("**********************************************************");
                         Console.WriteLine($"*** ¡¡FELICITACIONES {jugador.Nombre} ES EL GANADOR!! ***");
-                        Console.WriteLine("*******************************************");
+                        Console.WriteLine("**********************************************************");
                         break;
                     }
                 }
